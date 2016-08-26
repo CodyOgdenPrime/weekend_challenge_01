@@ -1,0 +1,38 @@
+body {
+	font-family: 'Helvetica Neue', 'Open Sans', 'Arial', sans-serif;
+}
+
+#container {
+	width: 100%;
+}
+
+#container thead {
+	font-weight: bold;
+}
+
+#container tbody tr > td:nth-child(5) {
+	text-align: right;
+}
+
+#container tbody tr > td:nth-child(5):before,
+#salaryTotal:before {
+	content: "$";
+}
+
+#container thead {
+	text-align: center;
+	background-color: #0f50a0;
+	color: #FFF;
+}
+
+#container tbody tr td {
+	border-bottom: 1px dotted #0f50a0;
+}
+
+tfoot td {
+	text-align: right;
+}
+
+tfoot td {
+	border-bottom: 1px dotted #0f50a0;
+}

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Weekend Challenge 1</title>
+		<script src="script.js"></script>
+		<link rel="stylesheet" type="text/css" href="style.css">
+	</head>
+	<body>
+	<form onsubmit="event.preventDefault(); employees.addEmployee();">
+		<input type="text" id="firstNameInput" placeholder="First Name" />
+		<input type="text" id="lastNameInput" placeholder="Last Name" />
+		<input type="text" id="employeeIdInput" placeholder="Employee ID" />
+		<input type="text" id="jobTitleInput" placeholder="Job Title" />
+		<input type="text" id="salaryInput" placeholder="Annual Salary" />
+		<input type="submit" />
+	</form>
+		<table id="container">
+			<thead>
+				<tr>
+					<td>ID</td>
+					<td>First Name</td>
+					<td>Last Name</td>
+					<td>Job Title</td>
+					<td>Monthly Salary</td>
+					<td>Delete?</td>
+				</tr>
+			</thead>
+			<tbody id="dataDisplay">
+				<tr>
+					<td colspan="6" id="defaultDisplay">No Employees</td>
+				</tr>
+			</tbody>
+			<tfoot>
+				<tr>
+					<td colspan="4"><b>Total Monthly Salary:</b></td>
+					<td colspan="1" id="salaryTotal">0</td>
+					<td></td>
+				</tr>
+			</tfoot>
+		</table>
+	</body>
+</html>
