@@ -2,6 +2,7 @@ var employees = new Object();
 
 employees.data = [];
 employees.fields = ["firstNameInput","lastNameInput","employeeIdInput","jobTitleInput","salaryInput"];
+employees.defaultMessage = document.getElementById( "defaultDisplay" );
 
 employees.addEmployee = function () { // Add a new employee
 
@@ -37,6 +38,7 @@ employees.resetForm = function () { // Resets the add employee form
 	// Loop through all form fields and set value to empty
 	for( var i = 0; i < this.fields.length; i++ ) {
 		document.getElementById( this.fields[i] ).value = "";
+		document.getElementById( this.fields[2] ).focus();
 	}
 	return true;
 }
@@ -44,7 +46,7 @@ employees.resetForm = function () { // Resets the add employee form
 employees.displayEmployees = function () { // Generate and display all employees in the DOM
 	// Get the container element
 	var display = document.getElementById("dataDisplay");
-	display.innerHTML = "";
+	display.innerHTML = employees.defaultMessage;
 	if( this.data.length < 1 ) {
 		// If the data.length is less than one ( no data exists ) show a default message
 		display.innerHTML = '<td colspan="6" id="defaultDisplay">No Employees</td>';
@@ -57,7 +59,7 @@ employees.displayEmployees = function () { // Generate and display all employees
 									'<td>' + this.data[i].lastName + '</td>' +
 									'<td>' + this.data[i].jobTitle + '</td>' +
 									'<td>' + ( this.data[i].salary / 12 ) + '</td>' +
-									'<td><a onclick="event.preventDefault(); employees.removeEmployee(' + i + ')">[ X ]</a></td>' +
+									'<td><button onclick="event.preventDefault(); employees.removeEmployee(' + i + ')">Remove Employee</button></td>' +
 								'</tr>';
 		}
 	}

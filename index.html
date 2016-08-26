@@ -7,14 +7,7 @@
 		<link rel="stylesheet" type="text/css" href="style.css">
 	</head>
 	<body>
-	<form onsubmit="event.preventDefault(); employees.addEmployee();">
-		<input type="text" id="firstNameInput" placeholder="First Name" />
-		<input type="text" id="lastNameInput" placeholder="Last Name" />
-		<input type="text" id="employeeIdInput" placeholder="Employee ID" />
-		<input type="text" id="jobTitleInput" placeholder="Job Title" />
-		<input type="text" id="salaryInput" placeholder="Annual Salary" />
-		<input type="submit" />
-	</form>
+<form id="addEmployee" onsubmit="event.preventDefault(); employees.addEmployee();">
 		<table id="container">
 			<thead>
 				<tr>
@@ -32,6 +25,14 @@
 				</tr>
 			</tbody>
 			<tfoot>
+				<tr id="addEmployeeRow">
+					<td><input type="text" id="employeeIdInput" placeholder="Employee ID" /></td>
+					<td><input type="text" id="firstNameInput" placeholder="First Name" /></td>
+					<td><input type="text" id="lastNameInput" placeholder="Last Name" /></td>
+					<td><input type="text" id="jobTitleInput" placeholder="Job Title" /></td>
+					<td><input type="text" id="salaryInput" placeholder="Annual Salary" /></td>
+					<td><input type="submit" value="Add Employee" /></td>
+				</tr>
 				<tr>
 					<td colspan="4"><b>Total Monthly Salary:</b></td>
 					<td colspan="1" id="salaryTotal">0</td>
@@ -39,5 +40,6 @@
 				</tr>
 			</tfoot>
 		</table>
+		</form>
 	</body>
 </html>

@@ -5,7 +5,7 @@ body {
 #container {
 	width: 100%;
 }
-
+`
 #container thead {
 	font-weight: bold;
 }
@@ -31,8 +31,27 @@ body {
 
 tfoot td {
 	text-align: right;
+	box-sizing: border-box;
 }
 
 tfoot td {
 	border-bottom: 1px dotted #0f50a0;
+}
+
+#addEmployeeRow input {
+	width: 90%;
+	outline: none;
+	margin: 0 auto;
+	font-size: 1.25em;
+}
+#addEmployeeRow :first-child:before {
+	content: "+";
+	margin-right: .25em;
+	padding: .25em .5em;
+	background-color: #0f50a0;
+	color: #FFF;
+}
+
+#defaultDisplay {
+	text-align: center;
 }
