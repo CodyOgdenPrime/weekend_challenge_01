@@ -3,43 +3,68 @@
 	<head>
 		<meta charset="utf-8" />
 		<title>Weekend Challenge 1</title>
-		<script src="script.js"></script>
+		<script src="new.js"></script>
+		<link rel="stylesheet" type="text/css" href="node_modules/normalize.css/normalize.css">
 		<link rel="stylesheet" type="text/css" href="style.css">
 	</head>
 	<body>
-<form id="addEmployee" onsubmit="event.preventDefault(); employees.addEmployee();">
-		<table id="container">
-			<thead>
-				<tr>
-					<td>ID</td>
-					<td>First Name</td>
-					<td>Last Name</td>
-					<td>Job Title</td>
-					<td>Monthly Salary</td>
-					<td>Delete?</td>
-				</tr>
-			</thead>
-			<tbody id="dataDisplay">
-				<tr>
-					<td colspan="6" id="defaultDisplay">No Employees</td>
-				</tr>
-			</tbody>
-			<tfoot>
-				<tr id="addEmployeeRow">
-					<td><input type="text" id="employeeIdInput" placeholder="Employee ID" /></td>
-					<td><input type="text" id="firstNameInput" placeholder="First Name" /></td>
-					<td><input type="text" id="lastNameInput" placeholder="Last Name" /></td>
-					<td><input type="text" id="jobTitleInput" placeholder="Job Title" /></td>
-					<td><input type="text" id="salaryInput" placeholder="Annual Salary" /></td>
-					<td><input type="submit" value="Add Employee" /></td>
-				</tr>
-				<tr>
-					<td colspan="4"><b>Total Monthly Salary:</b></td>
-					<td colspan="1" id="salaryTotal">0</td>
-					<td></td>
-				</tr>
-			</tfoot>
-		</table>
+		<header>
+			<h1>Evil Corp Employee Database</h1>
+			<div class="user-info">
+				
+				<img style="height: 30px;width: 30px;" src="images/user-circle.svg" />
+
+			</div>
+		</header>
+		<main>
+			<table id="data-container">
+				<thead>
+					<tr>
+						<td>PHOTO</td>
+						<td>ID</td>
+						<td>First Name</td>
+						<td>Last Name</td>
+						<td>Job Title</td>
+						<td>Annual Salary</td>
+						<td>Monthly Salary</td>
+						<td>Actions</td>
+					</tr>
+				</thead>
+				<tbody id="data-display">
+					<tr>
+						<td><img src="images/user-circle.svg" /></td>
+						<td>00001</td>
+						<td>Cody</td>
+						<td>Ogden</td>
+						<td>Developer</td>
+						<td>12000</td>
+						<td>1000</td>
+						<td><button>X</button></td>
+					</tr>
+					<tr>
+						<td><img src="images/user-add.svg" /></td>
+						<td><input autocomplete="off" placeholder="Employee ID" id="employeeIdInput" type="text" /></td>
+						<td><input autocomplete="off" placeholder="First Name" id="firstNameInput" type="text" /></td>
+						<td><input autocomplete="off" placeholder="Last Name" id="lastNameInput" type="text" /></td>
+						<td><input autocomplete="off" placeholder="Job Title" id="jobTitleInput" type="text" /></td>
+						<td><input autocomplete="off" placeholder="Annual Salary" id="salaryInput" type="text" /></td>
+						<td>&nbsp;</td>
+						<td><input type="submit" /></td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<td colspan="8" style="background-color: blue">
+						<form>
+						<table>
+
+						</table>
+						</form>
+					</td>
+				</tfoot>
+			</table>
+		</main>
+		<form onsubmit="">
+
 		</form>
 	</body>
 </html>

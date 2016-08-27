@@ -1,58 +1,77 @@
-body {
-	font-family: 'Helvetica Neue', 'Open Sans', 'Arial', sans-serif;
+header {
+	width: 100%;
+	display: flex;
+	flex-flow: row nowrap;
+	align-items: center;
+	box-sizing: border-box;
+	padding: 1.5em 1em 1.5em 1em;
 }
 
-#container {
-	width: 100%;
+header h1 {
+	font-size: 1.25em;
+	margin: 0;
 }
-`
-#container thead {
+
+header .user-info {
+	margin-left: auto;
+}
+
+header img {
+	display: block;
+}
+
+table {
+	width: 100%;
+	border-collapse:collapse;
+}
+
+tr,
+td {
+	border: 0;
+	margin: 0;
+	padding: 0;
+}
+
+tbody tr > td:first-of-type,
+thead tr > td:first-of-type {
+	box-sizing: border-box;
+	width: 80px;
+	text-align: center;
+}
+
+thead {
 	font-weight: bold;
 }
 
-#container tbody tr > td:nth-child(5) {
+table tr > td:first-of-type img {
+	height:30px;
+	width: 30px;
+	display: block;
+	margin: 0 auto;
+}
+
+tbody td {
+	vertical-align: middle;
+	padding: .5em 0;
+}
+
+#data-container > tbody > tr:not(:last-of-type) > td:nth-child(n+6):nth-child(-n+7) {
 	text-align: right;
 }
 
-#container tbody tr > td:nth-child(5):before,
-#salaryTotal:before {
+#data-container > tbody > tr:not(:last-of-type) > td:nth-child(n+6):nth-child(-n+7):before {
 	content: "$";
 }
 
-#container thead {
+tbody tr:nth-child(odd) {
+	background-color: #FAFAFA;
+}
+
+#data-container > tbody > tr > td:nth-child(n+7) {
 	text-align: center;
-	background-color: #0f50a0;
-	color: #FFF;
 }
 
-#container tbody tr td {
-	border-bottom: 1px dotted #0f50a0;
-}
-
-tfoot td {
-	text-align: right;
-	box-sizing: border-box;
-}
-
-tfoot td {
-	border-bottom: 1px dotted #0f50a0;
-}
-
-#addEmployeeRow input {
-	width: 90%;
+table input {
+	max-width: 100%;
 	outline: none;
-	margin: 0 auto;
-	font-size: 1.25em;
-}
-#addEmployeeRow :first-child:before {
-	content: "+";
-	margin-right: .25em;
-	padding: .25em .5em;
-	background-color: #0f50a0;
-	color: #FFF;
-}
-
-#defaultDisplay {
-	text-align: center;
-	padding: 1em 0;
 }
