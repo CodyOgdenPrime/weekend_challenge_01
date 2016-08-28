@@ -41,15 +41,22 @@
 						<td>1000</td>
 						<td><button>X</button></td>
 					</tr>
+				</tbody>
+				<tbody>
 					<tr>
-						<td><img src="images/user-add.svg" /></td>
-						<td><input autocomplete="off" placeholder="Employee ID" id="employeeIdInput" type="text" /></td>
-						<td><input autocomplete="off" placeholder="First Name" id="firstNameInput" type="text" /></td>
-						<td><input autocomplete="off" placeholder="Last Name" id="lastNameInput" type="text" /></td>
-						<td><input autocomplete="off" placeholder="Job Title" id="jobTitleInput" type="text" /></td>
-						<td><input autocomplete="off" placeholder="Annual Salary" id="salaryInput" type="text" /></td>
-						<td>&nbsp;</td>
-						<td><input type="submit" /></td>
+						<td colspan="8" id="form-cell">
+						<form onsubmit="event.preventDefault(); employees.add(); ">
+							<div class="flex-row">
+								<img src="images/user-add.svg" />
+								<input autocomplete="off" placeholder="Employee ID" id="employeeIdInput" type="text" />
+								<input autocomplete="off" placeholder="First Name" id="firstNameInput" type="text" />
+								<input autocomplete="off" placeholder="Last Name" id="lastNameInput" type="text" />
+								<input autocomplete="off" placeholder="Job Title" id="jobTitleInput" type="text" />
+								<input autocomplete="off" placeholder="Annual Salary" id="salaryInput" type="text" />
+								<input type="submit" />
+							</div>
+						</form>
+						</td>
 					</tr>
 				</tbody>
 				<tfoot>
@@ -63,8 +70,5 @@
 				</tfoot>
 			</table>
 		</main>
-		<form onsubmit="">
-
-		</form>
 	</body>
 </html>

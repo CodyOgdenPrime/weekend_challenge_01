@@ -32,7 +32,7 @@ td {
 	padding: 0;
 }
 
-tbody tr > td:first-of-type,
+#data-display > tr > td:first-of-type,
 thead tr > td:first-of-type {
 	box-sizing: border-box;
 	width: 80px;
@@ -43,11 +43,17 @@ thead {
 	font-weight: bold;
 }
 
-table tr > td:first-of-type img {
+#data-display > tr > td:first-of-type img {
 	height:30px;
 	width: 30px;
 	display: block;
 	margin: 0 auto;
+}
+
+#form-cell img {
+	display: block;
+	float:left;
+	padding: 0 1em;
 }
 
 tbody td {
