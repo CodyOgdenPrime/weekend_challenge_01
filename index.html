@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8" />
 		<title>Weekend Challenge 1</title>
-		<script src="new.js"></script>
+		<script src="script.js"></script>
 		<link rel="stylesheet" type="text/css" href="node_modules/normalize.css/normalize.css">
 		<link rel="stylesheet" type="text/css" href="style.css">
 	</head>
@@ -31,15 +31,13 @@
 					</tr>
 				</thead>
 				<tbody id="data-display">
+
+				</tbody>
+				<tbody>
 					<tr>
-						<td><img src="images/user-circle.svg" /></td>
-						<td>00001</td>
-						<td>Cody</td>
-						<td>Ogden</td>
-						<td>Developer</td>
-						<td>12000</td>
-						<td>1000</td>
-						<td><button>X</button></td>
+						<td colspan="8" id="total-monthly">
+
+						</td>
 					</tr>
 				</tbody>
 				<tbody>
@@ -70,5 +68,9 @@
 				</tfoot>
 			</table>
 		</main>
+		<div>
+			<p><button onclick="mrRobot();">Add Mr. Robot Data</button></p>
+			<p>(Contains Season 2 Spoilers)</p>
+		</div>
 	</body>
 </html>
