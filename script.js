@@ -1,3 +1,25 @@
+/* Sunday Notes:
+
+	Goals for Sunday:
+		- Only Put Controllers that directly affect the table into the main function/class
+		- Move any data validation and form handling outside of the main function/class
+		- Maybe remove things from the DOM a little lighter than looping through everything over and over
+
+	Other Ideas
+		- Redo it in jQuery
+*/
+
+/*
+
+General Notes for people poking around this code:
+
+My goal was was to make an object with methods that handles
+interacting with the table much easier.
+
+*/
+
+
+
 var employeeSalaryTable = function () {
 	var data = [];
 	var defaultMessageElement = document.getElementById( "defaultDisplay" );
@@ -10,7 +32,7 @@ var employeeSalaryTable = function () {
 
 		// If a new employee object is *not* passed to the function
 		// Get the information from the DOM
-		// Normally would need more checks
+
 		if( newEmployee === undefined ) {
 
 			// Get all Inputs and Set Them As Variables
@@ -107,9 +129,6 @@ var employeeSalaryTable = function () {
 
 	var refreshEmployees = function () {
 
-		// Variable to calculate total expenditure
-		var monthlyExp = 0;
-
 		// Set our display area
 		var display = document.getElementById("data-display");
 
@@ -119,8 +138,7 @@ var employeeSalaryTable = function () {
 		// For each employee
 		for ( var i = 0; i < data.length; i++ ) {
 
-			// Add Monthly Salary to Company Wide Monthly Expenditure
-			monthlyExp += Math.round( data[i].salary / 12 )
+
 
 			// Create our Row Element
 			var row = createElement( "tr" );
@@ -191,9 +209,6 @@ var employeeSalaryTable = function () {
 
 		}
 
-		// Display the Total Monthly Expenditure
-		document.getElementById("total-monthly").innerHTML = monthlyExp;
-
 	};
 
 	var removeEmployee = function ( index ) {
@@ -260,6 +275,34 @@ var employeeSalaryTable = function () {
 		}
 	};
 
+	var monthlyTotalSalary = function () {
+		// Variable to calculate total expenditure
+		var monthlyExp = 0;
+
+		for ( var i = 0; i < data.length; i++ ) {
+
+			// Add Monthly Salary to Company Wide Monthly Expenditure
+			monthlyExp += Math.round( data[i].salary / 12 );
+
+		}
+
+		return monthlyExp;
+	};
+
+	var yearlyTotalSalary = function () {
+		// Variable to calculate total expenditure
+		var monthlyExp = 0;
+
+		for ( var i = 0; i < data.length; i++ ) {
+
+			// Add Monthly Salary to Company Wide Monthly Expenditure
+			monthlyExp += Math.round( data[i].salary );
+
+		}
+
+		return monthlyExp;
+	};
+
 	/*
 	 * Methods
 	 */
@@ -268,9 +311,9 @@ var employeeSalaryTable = function () {
 		return addEmployee( obj );
 	};
 
-	this.edit = function () {
+	/*this.edit = function () {
 		// Stretch goal for Sunday
-	};
+	};*/
 
 	this.refresh = function () {
 		return false;
@@ -281,9 +324,19 @@ var employeeSalaryTable = function () {
 		return removeEmployee( index );
 	};
 
-	this.fetch = function () {
-		// Returns the data arary
-		return data;
+	this.fetch = function ( request ) {
+		// Fetch specific data
+		switch ( request ) {
+
+			case "employeeCount":
+				// Returns number of employees
+				return data.length; 
+
+			default:
+				// Attempts to run a function
+				return eval( request )(); 
+
+		}
 	};
 
 };
