@@ -176,6 +176,16 @@ var employeeSalaryTable = function () {
 		var index = this.getAttribute("data-index");
 		return removeEmployee( index );
 	};
+
+	this.testRemove = function () {
+		var body = document.getElementsByTagName("body");
+		var button = document.createElement("button");
+		button.addEventListener("click", this.remove );
+		button.innerHTML = "Hello!";
+		body.appendChild( button );
+	};
+
 };
 
 employees = new employeeSalaryTable();
+
