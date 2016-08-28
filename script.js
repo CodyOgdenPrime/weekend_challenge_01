@@ -1,104 +1,22 @@
-/* Sunday Notes:
+// Error Message Handler
+var errorAlert = function ( message, showAlert ) {
+	// If show alert is true
+	if ( showAlert === true ) {
+		// Alert the user
+		alert( message );
+	}
+	// Console.log the error message
+	console.error( message );
 
-	Goals for Sunday:
-		- Only Put Controllers that directly affect the table into the main function/class
-		- Move any data validation and form handling outside of the main function/class
-		- Maybe remove things from the DOM a little lighter than looping through everything over and over
+	return false;
+};
 
-	Other Ideas
-		- Redo it in jQuery
-*/
+var table = function ( options ) {
 
-/*
-
-General Notes for people poking around this code:
-
-My goal was was to make an object with methods that handles
-interacting with the table much easier.
-
-*/
-
-
-
-var employeeSalaryTable = function () {
 	var data = [];
-	var defaultMessageElement = document.getElementById( "defaultDisplay" );
-
-	/*
-	 * Functions
-	 */
-
-	var addEmployee = function ( newEmployee ) {
-
-		// If a new employee object is *not* passed to the function
-		// Get the information from the DOM
-
-		if( newEmployee === undefined ) {
-
-			// Get all Inputs and Set Them As Variables
-			var employeeIdInput	= document.getElementById("employeeIdInput");
-			var firstNameInput	= document.getElementById("firstNameInput");
-			var lastNameInput	= document.getElementById("lastNameInput");
-			var jobTitleInput	= document.getElementById("jobTitleInput");
-			var salaryInput		= document.getElementById( "salaryInput" );
-
-			// Ensure we have correct types for our data ( salary is a number )
-
-			// Sanitize the Salary Given by the User (returns undefined or number)
-			var salarySanitize = sanitizeSalary( salaryInput.value );
-
-			// If salaryOut is undefined
-			if ( salarySanitize === undefined ) {
-
-				// Show an alert to the user that salary can only be a number
-				errorAlert( "Salary can only be a number!", true );
-				return false;
-
-			}
-
-			// Build the employee object
-			var newEmployee = {
-				id: employeeIdInput.value,
-				firstName: firstNameInput.value,
-				lastName: lastNameInput.value,
-				jobTitle: jobTitleInput.value,
-				salary: salarySanitize
-			};
-
-			// Ensure all fields have input
-
-			// For each key in newEmployee
-			for( var item in newEmployee ) {
-				switch ( newEmployee[item] ) {
-					case "":
-					case undefined:
-					case null:
-						errorAlert( "All form fields must be filled out.", true );
-						return false;
-				}
-			}
-
-
-			// Clear the Add New Employee Form
-			employeeIdInput.value = "";
-			firstNameInput.value = "";
-			lastNameInput.value = "";
-			jobTitleInput.value = "";
-			salaryInput.value = "";
-
-		}
-
-		// If all sanitation and checks have passed
-		// Add the employee to the employee array
-		data.push( newEmployee );
-
-		// Refresh the Employee Table & Analytics ( e.g. Monthly Paid Out )
-		refreshEmployees();
-
-	};
 
 	// Simple node creation
-	var createElement = function ( node, text ) {
+	var createElement = function ( node, text ) { // I know, name space, shoot me.
 
 		// Create an element with the given parameter
 		var element = document.createElement( node );
@@ -106,6 +24,7 @@ var employeeSalaryTable = function () {
 		// Find the data type of text
 		var textType = typeof text;
 
+		// Only add the text to the DOM if it is something worthwile
 		switch ( textType ) {
 			case "string":
 			case "number":
@@ -118,262 +37,238 @@ var employeeSalaryTable = function () {
 		return element;
 
 	};
+	
+	var addRow = function ( obj ) {
 
-	var errorAlert = function ( message, showAlert ) {
-		if ( showAlert === true ) {
-			alert( message );
-		}
-		console.error( message );
-		return false;
-	};
-
-	var refreshEmployees = function () {
-
-		// Set our display area
-		var display = document.getElementById("data-display");
-
-		// Remove Everything from the Display
-		display.innerHTML = "";
-
-		// For each employee
-		for ( var i = 0; i < data.length; i++ ) {
-
-
-
-			// Create our Row Element
-			var row = createElement( "tr" );
-
-			// Create the profile image
-			var employeeImg = createElement( "img" );
-
-			// Set img attributes
-			employeeImg.setAttribute("src","images/user-circle.svg");
-			employeeImg.setAttribute("title","Fake User Image");
-			employeeImg.setAttribute("alt","Fake User Image");
-
-			// Create photoCell to hold img
-			var photoCell = createElement( "td" );
-
-			// Append img to photoCell
-			photoCell.appendChild( employeeImg );
-
-			// Add the cell to our row
-			row.appendChild( photoCell );
-
-			// For each key in our objects
-			for ( var item in data[i] ) {
-
-				// Create a new cell
-				var cell = createElement( "td", data[i][item] );
-
-				// Append the cell to the row
-				row.appendChild( cell );
-
-			}
-
-			// Create Montly Salary Table Cell
-			var monthlySalaryCell = createElement( "td", Math.round( data[i].salary / 12 ) );
-
-			// Add this to the employee row
-			row.appendChild( monthlySalaryCell );
-
-			// Create the remove employee image and add some attributes
-			var removeEmployeeImg = createElement( "img" );
-			removeEmployeeImg.setAttribute("src","images/user-remove.svg");
-			removeEmployeeImg.setAttribute("title","Remove Employee");
-			removeEmployeeImg.setAttribute("alt","Click to Remove Employee");
-
-			// Create the remove employee button
-			var removeEmployeeButton = createElement("button");
-
-			// Append the image to the button
-			removeEmployeeButton.appendChild( removeEmployeeImg );
-
-			// Set `data-index` attribute which refernces data[i]
-			removeEmployeeButton.setAttribute( "data-index", i );
-
-			// Add an event listener for click
-			removeEmployeeButton.addEventListener( "click", removeEmployeeClickHandler );
-
-			// Create the Actions cell for each employee row
-			var actionsCell = createElement( "td" );
-
-			// Add Button to the Actions Cell
-			actionsCell.appendChild( removeEmployeeButton );
-
-			// Add the actions cell to the Row
-			row.appendChild( actionsCell );
-
-			// Append the row to the table
-			display.appendChild( row );
-
-		}
+		// Push an object to the data array
+		return data.push( obj );
 
 	};
 
-	var removeEmployee = function ( index ) {
+	var removeRow = function ( index ) {
 
-		// Splice the employee from the array
+		// If index is an object, I'm assuming it is a click event
+		// So I need to get the attribute from the click event element
+		if ( typeof index === "object" ) {
+			index = this.getAttribute("data-index");
+		}
+
+		// Splice the indexed number from the data arry
 		data.splice( index, 1 );
 
-		// Refresh the Employee Table & Analytics ( e.g. Monthly Paid Out )
-		refreshEmployees();
+		// Update the table display		
+		return refreshTable();
 
 	};
 
-	var removeEmployeeClickHandler = function () {
 
-		// Get the index stored in the button's data attribute
-		var index = this.getAttribute("data-index");
+	var removeRowEvent = function ( index ) {
 
-		// Send it to the removeEmployee function
-		return removeEmployee( index );
-	};
-
-	var sanitizeSalary = function ( inputStr ) {
-
-		// To string so we can play with it
-		inputStr = String( inputStr );
-
-		// Split inputStr's digits into array
-		var inputArr = inputStr.split("");
-
-		// Clear the input string
-		inputStr = "";
-
-		// If the first digit is a dollar sign, boot it.
-		if( inputArr[0] === "$" ) {
-			inputArr.shift();
+		// If index is an object, I'm assuming it is a click event
+		// So I need to get the attribute from the click event element
+		if ( typeof index === "object" ) {
+			index = this.getAttribute("data-index");
 		}
 
-		// Loop to check other digits
-		for ( var i = 0; i < inputArr.length; i++ ) {
+		// Splice the indexed number from the data arry
+		data.splice( index, 1 );
 
-		// Select each digit from the array
-		// Parse it into a number
-			var digit = parseInt( inputArr[i] );
+		// Update the table display		
+		return refreshTable();
 
-			// If is "Not a Number", return false
-			if( isNaN( digit ) ) {
-				return undefined;
+	};
+
+	var refreshTable = function () {
+
+		var container = document.getElementById( "data-display" );
+
+		container.innerHTML = "";
+
+		for( var i = 0; i < data.length; i++ ) {
+
+			// Create the employee row
+			var row = createElement( "tr" );
+
+			var photo = createElement( "img" );
+			photo.setAttribute( "src", "images/user-circle.svg");
+			photo.setAttribute( "title", data[i].firstName + " " + data[i].lastName );
+			photo.setAttribute( "alt", "Photo of " + data[i].firstName + " " + data[i].lastName );
+
+			var photoCell = createElement( "td" );
+
+			photoCell.appendChild( photo );
+
+			row.appendChild( photoCell );
+
+			// For Loop of Every Thing INside the Object
+			for( var item in data[i] ) {
+				var cell = createElement( "td", data[i][item] );
+				row.appendChild( cell );
 			}
 
-			// If not, put it back in the string
-			inputStr += inputArr[i];
+			// Add monthly salary cell
+
+			var monthlyCell = createElement( "td", Math.round( data[i].salary / 12 ) );
+			row.appendChild( monthlyCell );
+
+			// Add Actions Cells and Buttons
+			var removeBtnImg = createElement( "img" );
+			removeBtnImg.setAttribute( "src", "images/user-circle.svg");
+			removeBtnImg.setAttribute( "title", "Remove " + data[i].firstName + " " + data[i].lastName );
+			removeBtnImg.setAttribute( "alt", "Click to remove " + data[i].firstName + " " + data[i].lastName );
+
+			var removeBtn = createElement( "button" );
+			removeBtn.setAttribute("data-index", i);
+
+			removeBtn.appendChild( removeBtnImg );
+			removeBtn.addEventListener( "click", removeRow );
+
+			var actionsCell = createElement( "td" );
+
+			actionsCell.appendChild( removeBtn );
+
+			row.appendChild( actionsCell );
+
+			container.appendChild( row );
 
 		}
 
-		// Parse string of integers into a number
-		inputStr = parseInt( inputStr );
+		return data;
 
-		// If the final result is NaN
-		if( isNaN( inputStr ) ) {
-			return undefined;
+	};
+
+	// Methods
+
+	this.add = function ( obj, callback ) {
+		if ( addRow( obj ) && typeof callback === "function" ) {
+			return callback();
 		} else {
-			// Return the number
-			return inputStr;
+			return false;
 		}
 	};
 
-	var monthlyTotalSalary = function () {
-		// Variable to calculate total expenditure
-		var monthlyExp = 0;
-
-		for ( var i = 0; i < data.length; i++ ) {
-
-			// Add Monthly Salary to Company Wide Monthly Expenditure
-			monthlyExp += Math.round( data[i].salary / 12 );
-
+	this.remove = function ( index, callback ) {
+		if ( removeRow( index ) && typeof callback === "function" ) {
+			return callback();
+		} else {
+			return false;
 		}
-
-		return monthlyExp;
 	};
-
-	var yearlyTotalSalary = function () {
-		// Variable to calculate total expenditure
-		var monthlyExp = 0;
-
-		for ( var i = 0; i < data.length; i++ ) {
-
-			// Add Monthly Salary to Company Wide Monthly Expenditure
-			monthlyExp += Math.round( data[i].salary );
-
-		}
-
-		return monthlyExp;
-	};
-
-	/*
-	 * Methods
-	 */
-	this.add = function( obj ) {
-		// Allows external scripts to add data
-		return addEmployee( obj );
-	};
-
-	/*this.edit = function () {
-		// Stretch goal for Sunday
-	};*/
 
 	this.refresh = function () {
-		return false;
+		(options.onRefresh)();
+		return refreshTable();
 	};
 
-	this.remove = function( index ) {
-		// Externally remove an employee
-		return removeEmployee( index );
-	};
-
-	this.fetch = function ( request ) {
-		// Fetch specific data
-		switch ( request ) {
-
-			case "employeeCount":
-				// Returns number of employees
-				return data.length; 
-
-			default:
-				// Attempts to run a function
-				return eval( request )(); 
-
-		}
+	this.getData = function () {
+		return data;
 	};
 
 };
 
-employees = new employeeSalaryTable();
+var employees = new table({
+	onRefresh: this.getTotalMonthly
+});
 
+employees.submitForm = function () {
 
+	// Get all Inputs and Set Them As Variables
+	var employeeIdInput	= document.getElementById("employeeIdInput");
+	var firstNameInput	= document.getElementById("firstNameInput");
+	var lastNameInput	= document.getElementById("lastNameInput");
+	var jobTitleInput	= document.getElementById("jobTitleInput");
+	var salaryInput		= document.getElementById( "salaryInput" );
 
+	if ( employeeIdInput.value === "" &&
+		 firstNameInput.value === "" && 
+		 lastNameInput.value === "" &&
+		 jobTitleInput.value === "" &&
+		 salaryInput.value === "") {
+			errorAlert("All form fields required.", true);
+			return false;
+	}
 
+	// Sanitize Salary Input to ensure it is a number
+	// If we can't make a number, send an error and notify user
 
+	var salaryCheck = salaryInput.value;
+	var employeeSalary = 0;
 
+	//console.log( "Begin Salary Check:", salaryCheck );
 
-/*
+	salaryCheck = salaryCheck.split("");
 
-	MR ROBOT SEASON 2 (MILD) SPOILERS BELOW
+	if( salaryCheck[0] === "$" ) {
+		salaryCheck.shift();
+	}
 
-*/
+	// Loop to check the other digits
+	for ( var i = 0; i < salaryCheck.length; i++ ) {
+		// Establish each digit
+		var digit = parseInt( salaryCheck[i] );
+		
+		// If the digit is not a number
+		if ( isNaN( salaryCheck[i] ) ) {
+			// Alert the user, leave everything in the form
+			errorAlert( "Salary must be a number.", true );
+			return false; // 
+		} else {
+			// Rebuild the new salaryInput with an integer
+			employeeSalary += salaryCheck[i];
+		}
+	}
 
+	// Coerce the built salary to an integer
+	employeeSalary = parseInt( employeeSalary );
 
+	// If the final result is not a number
+	if ( isNaN( employeeSalary ) ) {
+		errorAlert( "There was a problem with the salary." );
+		return false;
+	}
 
+	// console.log( "Sanitized Salary:", employeeSalary );
 
+	// Create the object
 
+	var newEmployee = {
+		employeeId: employeeIdInput.value,
+		firstName: firstNameInput.value,
+		lastName: lastNameInput.value,
+		jobTitle: jobTitleInput.value,
+		salary: employeeSalary
+	};
 
+	// Add it to the table data
+	this.add( newEmployee, function() {
+		// Refresh the table
+		// Update the Total Monthly Expenditure
+		var container = document.getElementById( "total-monthly" );
 
+		// console.log( employees.getTotalMonthly() );
 
+		container.innerHTML = employees.getTotalMonthly();
 
+		// Clear form
+		employeeIdInput.value	= "";
+		firstNameInput.value	= "";
+		lastNameInput.value		= "";
+		jobTitleInput.value		= "";
+		salaryInput.value		= "";
 
+	});
 
+	this.refresh();
+};
 
-
-
-
-
-
-
-
-
+employees.getTotalMonthly = function () {
+	var total = 0;
+	var data = this.getData();
+	for( var i = 0; i < data.length; i++ ) {
+		total += data[i].salary;
+	}
+	return Math.round( total / 12 );
+};
 
 
 // Add some fake data to play with
@@ -442,5 +337,11 @@ function mrRobot() {
 		jobTitle: "Computer Analyst",
 		salary: 65000
 	});
+
+	var container = document.getElementById( "total-monthly" );
+
+	container.innerHTML = employees.getTotalMonthly();
+
+	employees.refresh();
 
 }
