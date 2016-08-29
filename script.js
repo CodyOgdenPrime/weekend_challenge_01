@@ -201,4 +201,98 @@ ready(function() {
 	// Refresh the table on launch
 	employees.refreshTable();
 
+
 });
+
+// Add some fake data to play with
+function mrRobot() {
+
+	employees.add({
+		id: "01",
+		firstName: "Elliot",
+		lastName: "Alderson",
+		jobTitle: "Mr. Robot",
+		salary: 0
+	}, function () {
+			// Refresh the table
+			employees.refreshTable();
+		});
+
+	employees.add({
+		id: "02",
+		firstName: "Darlene",
+		lastName: "Alderson",
+		jobTitle: "Hacker Chick",
+		salary: 100000
+	}, function () {
+			// Refresh the table
+			employees.refreshTable();
+		});
+
+	employees.add({
+		id: "03",
+		firstName: "Angela",
+		lastName: "Moss",
+		jobTitle: "Marketing Director",
+		salary: 95000
+	}, function () {
+			// Refresh the table
+			employees.refreshTable();
+		});
+
+	employees.add({
+		id: "04",
+		firstName: "Tyrell",
+		lastName: "Wellick",
+		jobTitle: "Unemployeed",
+		salary: 250000
+	}, function () {
+			// Refresh the table
+			employees.refreshTable();
+		});
+
+	employees.add({
+		id: "05",
+		firstName: "Joanna",
+		lastName: "Wellick",
+		jobTitle: "Housewife",
+		salary: 0
+	}, function () {
+			// Refresh the table
+			employees.refreshTable();
+		});
+
+	employees.add({
+		id: "06",
+		firstName: "Phillip",
+		lastName: "Price",
+		jobTitle: "Chief Executive Office",
+		salary: 9000000
+	}, function () {
+			// Refresh the table
+			employees.refreshTable();
+		});
+
+	employees.add({
+		id: "07",
+		firstName: "Gideon",
+		lastName: "Goddard",
+		jobTitle: "Deceased",
+		salary: 0
+	}, function () {
+			// Refresh the table
+			employees.refreshTable();
+		});
+
+	employees.add({
+		id: "08",
+		firstName: "Ollie",
+		lastName: "Parker",
+		jobTitle: "Computer Analyst",
+		salary: 65000
+	}, function () {
+			// Refresh the table
+			employees.refreshTable();
+		});
+
+}
