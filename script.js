@@ -1,347 +1,204 @@
-// Error Message Handler
-var errorAlert = function ( message, showAlert ) {
-	// If show alert is true
-	if ( showAlert === true ) {
-		// Alert the user
-		alert( message );
-	}
-	// Console.log the error message
-	console.error( message );
+var employees; // Establish global employees variable
 
-	return false;
-};
+// Function: When the document is ready, run the callback function
+function ready(fn) {
+  if (document.readyState != 'loading'){
+    fn();
+  } else {
+    document.addEventListener('DOMContentLoaded', fn);
+  }
+}
 
-var table = function ( options ) {
+// Object Cosntructor
+var dataTable = function ( container ) {
 
+	// Table Data
 	var data = [];
 
-	// Simple node creation
-	var createElement = function ( node, text ) { // I know, name space, shoot me.
+	// The container ID is passed when constructed
+	this.container = document.getElementById( container );
 
-		// Create an element with the given parameter
+	// Private Function
+	// Create a DOM element by passing parameters - returns a DOM element object
+	var createElement = function ( node, string ) {
+		// Create an element on the DOM
 		var element = document.createElement( node );
-
-		// Find the data type of text
-		var textType = typeof text;
-
-		// Only add the text to the DOM if it is something worthwile
-		switch ( textType ) {
-			case "string":
-			case "number":
-			case "symbol":
-				element.innerHTML = text;
-				break;
-		}
-
-		// Send the element back
+		// If a string parameter is sent, add it to the element's HTML
+		if( string !== undefined ) element.innerHTML = string;
+		// Return the element
 		return element;
-
-	};
-	
-	var addRow = function ( obj ) {
-
-		// Push an object to the data array
-		return data.push( obj );
-
 	};
 
-	var removeRow = function ( index ) {
-
-		// If index is an object, I'm assuming it is a click event
-		// So I need to get the attribute from the click event element
-		if ( typeof index === "object" ) {
-			index = this.getAttribute("data-index");
-		}
-
-		// Splice the indexed number from the data arry
-		data.splice( index, 1 );
-
-		// Update the table display		
-		return refreshTable();
-
-	};
-
-
-	var removeRowEvent = function ( index ) {
-
-		// If index is an object, I'm assuming it is a click event
-		// So I need to get the attribute from the click event element
-		if ( typeof index === "object" ) {
-			index = this.getAttribute("data-index");
-		}
-
-		// Splice the indexed number from the data arry
-		data.splice( index, 1 );
-
-		// Update the table display		
-		return refreshTable();
-
-	};
-
-	var refreshTable = function () {
-
-		var container = document.getElementById( "data-display" );
-
-		container.innerHTML = "";
-
-		for( var i = 0; i < data.length; i++ ) {
-
-			// Create the employee row
-			var row = createElement( "tr" );
-
-			var photo = createElement( "img" );
-			photo.setAttribute( "src", "images/user-circle.svg");
-			photo.setAttribute( "title", data[i].firstName + " " + data[i].lastName );
-			photo.setAttribute( "alt", "Photo of " + data[i].firstName + " " + data[i].lastName );
-
-			var photoCell = createElement( "td" );
-
-			photoCell.appendChild( photo );
-
-			row.appendChild( photoCell );
-
-			// For Loop of Every Thing INside the Object
-			for( var item in data[i] ) {
-				var cell = createElement( "td", data[i][item] );
-				row.appendChild( cell );
-			}
-
-			// Add monthly salary cell
-
-			var monthlyCell = createElement( "td", Math.round( data[i].salary / 12 ) );
-			row.appendChild( monthlyCell );
-
-			// Add Actions Cells and Buttons
-			var removeBtnImg = createElement( "img" );
-			removeBtnImg.setAttribute( "src", "images/user-circle.svg");
-			removeBtnImg.setAttribute( "title", "Remove " + data[i].firstName + " " + data[i].lastName );
-			removeBtnImg.setAttribute( "alt", "Click to remove " + data[i].firstName + " " + data[i].lastName );
-
-			var removeBtn = createElement( "button" );
-			removeBtn.setAttribute("data-index", i);
-
-			removeBtn.appendChild( removeBtnImg );
-			removeBtn.addEventListener( "click", removeRow );
-
-			var actionsCell = createElement( "td" );
-
-			actionsCell.appendChild( removeBtn );
-
-			row.appendChild( actionsCell );
-
-			container.appendChild( row );
-
-		}
-
-		return data;
-
-	};
-
-	// Methods
-
+	// Add a Row
 	this.add = function ( obj, callback ) {
-		if ( addRow( obj ) && typeof callback === "function" ) {
-			return callback();
-		} else {
-			return false;
+		// Push the object
+		data.push( obj );
+		// If callback is a function
+		if( typeof callback === "function" ) {
+			// Run it with the object as its argument
+			callback( obj );
 		}
 	};
 
+	// Remove a Row
 	this.remove = function ( index, callback ) {
-		if ( removeRow( index ) && typeof callback === "function" ) {
-			return callback();
-		} else {
-			return false;
+		// Splice the data array at the index parameter
+		data.splice( index, 1 );
+		// If callback is a function, run it
+		if( typeof callback === "function" ) {
+			callback();
 		}
 	};
 
-	this.refresh = function () {
-		(options.onRefresh)();
-		return refreshTable();
+	// Create and return a row element
+	this.row = function () {
+		return createElement( "tr" );
 	};
 
+	// Create and return a cell element
+	this.cell = function ( string ) {
+		return createElement( "td", string );
+	};
+
+	// Return the data array
 	this.getData = function () {
 		return data;
 	};
 
-};
-
-var employees = new table({
-	onRefresh: this.getTotalMonthly
-});
-
-employees.submitForm = function () {
-
-	// Get all Inputs and Set Them As Variables
-	var employeeIdInput	= document.getElementById("employeeIdInput");
-	var firstNameInput	= document.getElementById("firstNameInput");
-	var lastNameInput	= document.getElementById("lastNameInput");
-	var jobTitleInput	= document.getElementById("jobTitleInput");
-	var salaryInput		= document.getElementById( "salaryInput" );
-
-	if ( employeeIdInput.value === "" &&
-		 firstNameInput.value === "" && 
-		 lastNameInput.value === "" &&
-		 jobTitleInput.value === "" &&
-		 salaryInput.value === "") {
-			errorAlert("All form fields required.", true);
-			return false;
-	}
-
-	// Sanitize Salary Input to ensure it is a number
-	// If we can't make a number, send an error and notify user
-
-	var salaryCheck = salaryInput.value;
-	var employeeSalary = 0;
-
-	//console.log( "Begin Salary Check:", salaryCheck );
-
-	salaryCheck = salaryCheck.split("");
-
-	if( salaryCheck[0] === "$" ) {
-		salaryCheck.shift();
-	}
-
-	// Loop to check the other digits
-	for ( var i = 0; i < salaryCheck.length; i++ ) {
-		// Establish each digit
-		var digit = parseInt( salaryCheck[i] );
-		
-		// If the digit is not a number
-		if ( isNaN( salaryCheck[i] ) ) {
-			// Alert the user, leave everything in the form
-			errorAlert( "Salary must be a number.", true );
-			return false; // 
-		} else {
-			// Rebuild the new salaryInput with an integer
-			employeeSalary += salaryCheck[i];
-		}
-	}
-
-	// Coerce the built salary to an integer
-	employeeSalary = parseInt( employeeSalary );
-
-	// If the final result is not a number
-	if ( isNaN( employeeSalary ) ) {
-		errorAlert( "There was a problem with the salary." );
-		return false;
-	}
-
-	// console.log( "Sanitized Salary:", employeeSalary );
-
-	// Create the object
-
-	var newEmployee = {
-		employeeId: employeeIdInput.value,
-		firstName: firstNameInput.value,
-		lastName: lastNameInput.value,
-		jobTitle: jobTitleInput.value,
-		salary: employeeSalary
+	// Return the number of rows (data.length)
+	this.length = function () {
+		return data.length;
 	};
 
-	// Add it to the table data
-	this.add( newEmployee, function() {
-		// Refresh the table
-		// Update the Total Monthly Expenditure
-		var container = document.getElementById( "total-monthly" );
+	// Return the mathematical sum of a key in all objects
+	this.getTotalOfColumn = function ( key ) {
+		var total = 0;
+		for ( var i = 0; i < data.length; i++ ) {
+			total += data[i][key];
+		}
+		return total;
+	};
 
-		// console.log( employees.getTotalMonthly() );
-
-		container.innerHTML = employees.getTotalMonthly();
-
-		// Clear form
-		employeeIdInput.value	= "";
-		firstNameInput.value	= "";
-		lastNameInput.value		= "";
-		jobTitleInput.value		= "";
-		salaryInput.value		= "";
-
-	});
-
-	this.refresh();
 };
 
-employees.getTotalMonthly = function () {
-	var total = 0;
-	var data = this.getData();
-	for( var i = 0; i < data.length; i++ ) {
-		total += data[i].salary;
-	}
-	return Math.round( total / 12 );
-};
+// When the DOM is loaded, run this stuff. Same as $(document).ready();
+ready(function() {
+	// Construct the employee object
+	employees = new dataTable("data-display");
+	// Set a variable for the table's container where we display stuff on the DOM
+	container = employees.container;
 
+	// Fake Data to play with
+	employees.add({employeeId: "01", firstName: "Cody", lastName: "Ogden", jobTitle:"Developer",salary:1200});
+	employees.add({employeeId: "02", firstName: "James", lastName: "Galt", jobTitle:"Developer",salary:1200});
+	employees.add({employeeId: "03", firstName: "Milo", lastName: "Lucy", jobTitle:"Developer",salary:1200});
 
-// Add some fake data to play with
-function mrRobot() {
+	// Remove and employee
+	employees.removeEmployee = function() {
+		// Get the index stored in the data attribute
+		var index = this.getAttribute("data-index");
+		// Method to remove a specific data object
+		employees.remove( index, function () {
+			// Refresh the table
+			employees.refreshTable();
+		} );
+	};
 
-	employees.add({
-		id: "01",
-		firstName: "Elliot",
-		lastName: "Alderson",
-		jobTitle: "Mr. Robot",
-		salary: 0
-	});
+	employees.refreshTable = function () {
+		// Delete everything inside the display container
+		container.innerHTML = "";
 
-	employees.add({
-		id: "02",
-		firstName: "Darlene",
-		lastName: "Alderson",
-		jobTitle: "Hacker Chick",
-		salary: 100000
-	});
+		// For every employee
+		for ( var i = 0; i < employees.length(); i++ ) {
+			// Variable: Employee Object
+			var empObj = employees.getData()[i];
 
-	employees.add({
-		id: "03",
-		firstName: "Angela",
-		lastName: "Moss",
-		jobTitle: "Marketing Director",
-		salary: 95000
-	});
+			// Variable: Get a new Table Row
+			var row = employees.row();
 
-	employees.add({
-		id: "04",
-		firstName: "Tyrell",
-		lastName: "Wellick",
-		jobTitle: "Unemployeed",
-		salary: 250000
-	});
+			// Create the employee Photo
+			var photo = employees.cell('<img src="images/user-circle.svg" alt="Employee Photo" />');
 
-	employees.add({
-		id: "05",
-		firstName: "Joanna",
-		lastName: "Wellick",
-		jobTitle: "Housewife",
-		salary: 0
-	});
+			// Append the photo cell to the row
+			row.appendChild( photo );
+			// For every key in empObj
+			for ( var item in empObj ) {
+				// Create a cell
+				var cell = employees.cell( empObj[item] );
+				// Append the cell to the row
+				row.appendChild( cell );
+			}
 
-	employees.add({
-		id: "06",
-		firstName: "Phillip",
-		lastName: "Price",
-		jobTitle: "Chief Executive Office",
-		salary: 9000000
-	});
+			// Variable: Create a cell whose innterHTML is the Monthly Salary of that Employee
+			var monthlyCell = employees.cell( Math.round( empObj.salary / 12 ) );
 
-	employees.add({
-		id: "07",
-		firstName: "Gideon",
-		lastName: "Goddard",
-		jobTitle: "Deceased",
-		salary: 0
-	});
+			// Append the cell to the row
+			row.appendChild( monthlyCell );
 
-	employees.add({
-		id: "08",
-		firstName: "Ollie",
-		lastName: "Parker",
-		jobTitle: "Computer Analyst",
-		salary: 65000
-	});
+			// Create a remove button element
+			var removeBtn = document.createElement("button");
+				// Add some HTML
+				removeBtn.innerHTML = '<img src="images/user-remove.svg" alt="Remove User Button Image" />';
+				// Set the title attribute
+				removeBtn.setAttribute("title", "Remove Employee");
+				// Add an click event listener
+				removeBtn.addEventListener( "click", employees.removeEmployee );
+				// Set the data attribute to the index of the employee in the array
+				removeBtn.setAttribute("data-index", i);
 
-	var container = document.getElementById( "total-monthly" );
+			// Create an actions cell ( to hold any buttons )
+			var actionsCell = employees.cell();
+				// Append the button to the cell
+				actionsCell.appendChild( removeBtn );
 
-	container.innerHTML = employees.getTotalMonthly();
+			// Append the actions cell to the row
+			row.appendChild( actionsCell );
 
-	employees.refresh();
+			// Append the row to the table
+			container.appendChild( row );
+		}
 
-}
+		// Variable: Get the total monthly container
+		var monthlyDisplay = document.getElementById( "total-monthly" );
+
+		// Display the sum of all the salaries divided by 12
+		monthlyDisplay.innerHTML = Math.round( employees.getTotalOfColumn("salary") / 12 );
+
+	};
+
+	employees.submitForm = function () {
+
+		// Gather all user inputs into variables
+		var employeeIdInput = document.getElementById("employeeIdInput");
+		var firstNameInput = document.getElementById("firstNameInput");
+		var lastNameInput = document.getElementById("lastNameInput");
+		var jobTitleInput = document.getElementById("jobTitleInput");
+		var salaryInput = document.getElementById("salaryInput");
+
+		// Creat an employee Object
+		var newEmployee = {
+			employeeId: employeeIdInput.value,
+			firstName: firstNameInput.value,
+			lastName: lastNameInput.value,
+			jobTitle: jobTitleInput.value,
+			salary: Math.round( parseInt( salaryInput.value ) )
+		};
+
+		// Add the employee
+		employees.add( newEmployee, function () {
+			// Refresh the table
+			employees.refreshTable();
+		} );
+
+		// Clear the form
+		employeeIdInput.value = "";
+		firstNameInput.value = "";
+		lastNameInput.value = "";
+		jobTitleInput.value = "";
+		salaryInput.value = "";
+	};
+
+	// Refresh the table on launch
+	employees.refreshTable();
+
+});
