@@ -43,10 +43,10 @@ var dataTable = function ( container ) {
 	// Remove a Row
 	this.remove = function ( index, callback ) {
 		// Splice the data array at the index parameter
-		data.splice( index, 1 );
+		var removed = data.splice( index, 1 );
 		// If callback is a function, run it
 		if( typeof callback === "function" ) {
-			callback();
+			callback( removed );
 		}
 	};
 
