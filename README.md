@@ -48,9 +48,9 @@ for ( var i = 0; i < columns.length; i++ ) {
 container.appendChild( row );
 ```
 **Creates:**
-| ID |Name|PhoneNumber|Email|URL|
-|----|----|-----------|-----|---|
 
+| ID            | Name          | PhoneNumber | Email | Url  |
+| ------------- |:------------- | ----------- | ----- | ---- |
 
 ---
 
