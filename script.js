@@ -158,11 +158,21 @@ ready(function() {
 			container.appendChild( row );
 		}
 
-		// Variable: Get the total monthly container
-		var monthlyDisplay = document.getElementById( "total-monthly" );
+		// Total Salary
+		var totalSalary = employees.getTotalOfColumn("salary");
+		// Average Salary ( of all employees )
+		var avgSalary = Math.round( totalSalary / employees.length() );
+		// Monthly Expenditure
+		var monthlyOut = ( totalSalary / 12 );
 
-		// Display the sum of all the salaries divided by 12
-		monthlyDisplay.innerHTML = Math.round( employees.getTotalOfColumn("salary") / 12 );
+		// Total Annaul Salary Expenditure Display
+		document.getElementById( "total-annual" ).innerHTML = totalSalary;
+
+		// Variable: Get the total monthly container
+		document.getElementById( "total-monthly" ).innerHTML = monthlyOut;
+
+		// Average Salary Display
+		document.getElementById( "total-avg" ).innerHTML = avgSalary;
 
 	};
 

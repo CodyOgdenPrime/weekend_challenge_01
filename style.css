@@ -82,9 +82,19 @@ table input {
 	outline: none;
 }
 
-#total-monthly {
+#total-monthly,
+#total-annual {
 	text-align: center;
 }
+
+#total-annual:before {
+	content: 'Total Annual Salary: $';
+}
+
+#total-avg:before {
+	content: 'Total Avg Salary: $';
+}
+
 #total-monthly:before{
 	content: 'Total Monthly Expenditure: $';
 }
