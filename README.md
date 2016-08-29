@@ -35,7 +35,7 @@ Returns a `tr` as DOM Object. Accepts no parameters.
 ## Use Example
 ```js
 var table = new dataTable("table");
-var columns = ["ID", "Name", "Phone Number"];
+var columns = ["ID", "Name", "Phone Number", "Email", "Url"];
 var container = table.container;
 
 var row = table.row();
@@ -49,8 +49,8 @@ container.appendChild( row );
 ```
 **Creates:**
 
-| ID            | Name          | PhoneNumber | Email | Url  |
-| ------------- |:------------- | ----------- | ----- | ---- |
+| ID            | Name          | Phone Number | Email | Url  |
+| ------------- |:------------- | ------------ | ----- | ---- |
 
 ---
 
