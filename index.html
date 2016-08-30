@@ -5,78 +5,21 @@
 		<title>Weekend Challenge 1</title>
 		<script src="script.js"></script>
 		<link rel="stylesheet" type="text/css" href="normalize.css">
-		<link rel="stylesheet" type="text/css" href="style.css">
 	</head>
 	<body>
-		<header>
-			<h1>Evil Corp Employee Database</h1>
-			<div class="user-info">
-				
-				<img style="height: 30px;width: 30px;" src="images/user-circle.svg" />
-
-			</div>
-		</header>
-		<main>
-			<table id="data-container">
-				<thead>
-					<tr>
-						<td>PHOTO</td>
-						<td>ID</td>
-						<td>First Name</td>
-						<td>Last Name</td>
-						<td>Job Title</td>
-						<td>Annual Salary</td>
-						<td>Monthly Salary</td>
-						<td>Actions</td>
-					</tr>
-				</thead>
-				<tbody id="data-display">
-
-				</tbody>
-				<tbody>
-					<tr>
-						<td colspan="2" id="total-annual">
-
-						</td>
-						<td colspan="4" id="total-monthly">
-
-						</td>
-						<td colspan="2" id="total-avg">
-
-						</td>
-					</tr>
-				</tbody>
-				<tbody>
-					<tr>
-						<td colspan="8" id="form-cell">
-						<form onsubmit="event.preventDefault(); employees.submitForm(); ">
-							<div class="flex-row">
-								<img src="images/user-add.svg" />
-								<input autocomplete="off" placeholder="Employee ID" id="employeeIdInput" type="text" />
-								<input autocomplete="off" placeholder="First Name" id="firstNameInput" type="text" />
-								<input autocomplete="off" placeholder="Last Name" id="lastNameInput" type="text" />
-								<input autocomplete="off" placeholder="Job Title" id="jobTitleInput" type="text" />
-								<input autocomplete="off" placeholder="Annual Salary" id="salaryInput" type="text" />
-								<input type="submit" />
-							</div>
-						</form>
-						</td>
-					</tr>
-				</tbody>
-				<tfoot>
-					<td colspan="8" style="background-color: blue">
-						<form>
-						<table>
-
-						</table>
-						</form>
-					</td>
-				</tfoot>
-			</table>
-		</main>
+		<table id="tableDisplay"></table>
 		<div>
-			<p><button onclick="mrRobot();">Add Mr. Robot Data</button></p>
-			<p>(Contains Season 2 Spoilers)</p>
+			<p>Total Yearly Salary Outgoing: <span id="totalYearlyExpenditure"></span></p>
+			<p>Total Monthly Salary Outgoing: <span id="totalMonthlyExpenditure"></span></p>
+			<p>Average Yearly Salary: <span id="averageSalary"></span></p>
 		</div>
+		<form onsubmit="event.preventDefault(); submitForm();">
+			<input autocomplete="off" type="text" placeholder="Employee ID" 	 id="employeeIdInput" /><br/>
+			<input autocomplete="off" type="text" placeholder="First Name" 	 id="firstNameInput" /><br/>
+			<input autocomplete="off" type="text" placeholder="Last Name" 		 id="lastNameInput" /><br/>
+			<input autocomplete="off" type="text" placeholder="Job Title" 		 id="jobTitleInput" /><br/>
+			<input autocomplete="off" type="number" placeholder="Annual Salary" id="salaryInput" /><br/>
+			<input autocomplete="off" type="submit" />
+		</form>
 	</body>
 </html>
